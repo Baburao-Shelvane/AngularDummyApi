@@ -10,21 +10,33 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit{
   title = 'angular-dummy-api';
   posts:any;
+  users = [];
   //posts = [];
   count:any;
+  errorMessage:any;
   constructor(private _api: DummyApiService) { }
   
   ngOnInit(){
     this.getPostsList();
+    this.getUsersList();
   }
 
   getPostsList(){
-    this._api.getPosts().subscribe( function (result) { 
-      this.posts = result;
-      //console.log(result);
-      this.count = result.length;
+    this._api.getPosts().subscribe((res) => {
+      this.posts = res;
     });
-    console.log(this.posts);
-    console.log(this.count);
+  }
+
+  getUsersList(){
+    this._api.getUsers().subscribe(
+      response => {
+        this.users = response;
+        console.log(response);
+      },
+      error => {
+        this.errorMessage = <any>error;
+      }
+    );
+    
   }
 }
